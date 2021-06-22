@@ -1,0 +1,56 @@
+body {
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.icon-style {
+    background: rgb(230,138,9);
+    background: linear-gradient(118deg, rgba(230,138,9,1) 0%, rgba(188,115,128,1) 28%, rgba(167,104,186,1) 53%, rgba(143,91,254,1) 80%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.logo-font {
+    font-family: 'Carter One', cursive;
+    font-family: 'Finger Paint', cursive;
+}
+
+.logo-text {
+    padding-left: 1rem;
+}
+
+.shop-cart {
+    position: relative;
+}
+
+.itemInShop {
+    position: absolute;
+    top: -0.5rem;
+    right: -1rem;
+    background: #000;
+    color: #fff;
+    font-size: 0.8rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+/* Page Produit */
+.bg-color {
+    background: rgb(230,138,9);
+    background: linear-gradient(118deg, rgba(230,138,9,1) 0%, rgba(188,115,128,1) 28%, rgba(167,104,186,1) 53%, rgba(143,91,254,1) 80%);
+}
+
+/* Page Panier */
+.negative-margin {
+    margin-top: -2.5rem;
+}
+
+.fa-chevron-down {
+    cursor: pointer;
+}
