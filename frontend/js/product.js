@@ -1,3 +1,5 @@
+// Création d'une classe Produit qui 
+// Méthode de classe pour afficher le prix au bont format
 class Product {
     constructor(id, name, price, description, image, options) {
         this.id = id,
