@@ -31,9 +31,10 @@ let product = {};
 fetch(URL)
 .then(response => response.json())
 .then(data => {
-    let product = createProduct(data);
-    displaySingleProduct(product);
-    displayOptions(product);
+    let newProduct = createProduct(data);
+    console.log(newProduct);
+    displaySingleProduct(newProduct);
+    displayOptions(newProduct);
     addToShopCart();
     // console.log(data);
     // console.log(product);
@@ -43,10 +44,16 @@ fetch(URL)
 
 // Crée un objet "produit" 
 function createProduct(element) {
-    let newProduct = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
-    product[newProduct.id] = newProduct;
-    return newProduct;
+    product = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
+    return product;
 }
+
+// FIRST - Crée un objet "produit" 
+// function createProduct(element) {
+//     let newProduct = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
+//     product[newProduct.id] = newProduct;
+//     return newProduct;
+// }
 
 // Affiche le produit sur la page HTML
 function displaySingleProduct(product) {
@@ -71,7 +78,7 @@ function displaySingleProduct(product) {
     CONTAINER.insertAdjacentHTML('afterbegin', TEMPLATE);
 }
 
-// Récupère les 
+
 function displayOptions(product) {
     let optionsList = product.options;
     // console.log(optionsList);
@@ -87,12 +94,14 @@ function addToShopCart() {
     // const BUTTON = document.querySelector('#shopBtn');
     FORM.addEventListener('submit', (e) => {
         e.preventDefault();
-        const ID = e.target.querySelector('#shopBtn').dataset.id;
+        // const ID = e.target.querySelector('#shopBtn').dataset.id;
         const SELECT = document.querySelector('#optionSelect');
         const OPTION_INPUT = SELECT.options[SELECT.selectedIndex].value;
         // console.log(ID);
         // console.log(OPTION_INPUT);
-        product[ID].options = OPTION_INPUT;
+        //console.log(product.options);
+        product.options = OPTION_INPUT;
+        // console.log(product.options);
         addProductInShop(product);
         // alert("Votre produit a bien été ajouté au panier !");
     });
@@ -102,17 +111,3 @@ function confirmationMessage() {
     const MESSAGE = '<p class="mt-3">Votre produit a bien été ajouté au panier !</p>';
     document.querySelector('#cardProduct').insertAdjacentHTML('beforeend', MESSAGE);
 }
-
-// LOCAL STORAGE
-// function saveToLocalStorage(product) {
-//     let data = localStorage.getItem("productsInShop");
-//     let productInShopCart = [];
-//     if (data === null) {
-//         productInShopCart = [];
-//     } else {
-//         productInShopCart.push(localStorage.getItem("productsInShop"));
-//     } 
-//     productInShopCart.push(JSON.stringify(product));
-//     console.log(productInShopCart);
-//     localStorage.setItem("productsInShop", productInShopCart);
-// }

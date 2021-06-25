@@ -2,43 +2,55 @@
 const CONTAINER = document.querySelector('#shopContainer');
 
 // ECOUTEUR 
-CONTAINER.addEventListener('click', updateShopCart);
+// CONTAINER.addEventListener('click', updateShopCart);
 
 // FONCTIONS
 (async function(){
     let productsInShop = await getProductsInShop();
     for (product of productsInShop) {
-        // console.log(Object.keys(product));
+        // let productShop = new Product(product.id, product.name, product.price, product.description, product.image, product.options);
         let productShop = createProduct(product);
-        console.log(productShop);
+        // console.log(productShop);
         displayProduct(productShop);
     }
+    document.querySelectorAll('.closeBtn').forEach(btn => {
+        btn.addEventListener('click', updateShopCart);
+    })
     
 })()
 
-// Crée un objet "produit" 
+
+// Crée un objet "produit" // Ca marche aussi en le mettant directement dans la fonction asyn :
+// let pdt = New Product(product.name, etc....)
 function createProduct(element) {
-    let key = Object.keys(element);
-    let newProduct = new Product(element[key].id, element[key].name, element[key].price, element[key].description, element[key].image, element[key].options);
-    product[newProduct.id] = newProduct;
+    let newProduct = new Product(element.id, element.name, element.price, element.description, element.image, element.options);
+    // product[newProduct.id] = newProduct;
     return newProduct;
 }
 
+
+
 function displayProduct(product) {
-    const TEMPLATE = `<div class="card shadow-sm mb-3">
-                        <div class="row">
-                            <div class="card-header bg-transparent border-0 text-end p-0 mr-3">
-                                <button type="button" class="btn close closeBtn" aria-label="Close" data-id="${product.id}">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+    const TEMPLATE = `<div class="card shadow-sm mb-3" data-id="${product.id}">
+                        <div class="card-header container-fluid"> 
+                            <div class="row">
+                                <div class="col"> 
+                                    <h3 class="modal-title h5">${product.name}</h3>
+                                </div>
+                                <div class="col-1 float-left p-0"> 
+                                    <button type="button" class="btn close closeBtn" aria-label="Close" data-id="${product.id}" data-option="${product.options}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer du panier">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <img src="${product.image}" class="card-img" alt="photographie du produit ${product.name}">
+                        </div> 
+                        <div class="row g-0">
+                            <div class="col-md-4"> 
+                                <img src="${product.image}" class="card-img img-responsive" alt="photographie du produit ${product.name}">
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-8"> 
                                 <div class="card-body">
-                                    <h3 class="card-title h5">${product.name}</h3>
-                                    <p class="card-text">Options : ${product.options}</p>
+                                    <p class="card-text">Option : ${product.options}</p>
                                     <p class="card-text">${product.getFormatedPrice()} €</p>
                                 </div>
                             </div>
@@ -49,6 +61,11 @@ function displayProduct(product) {
 
 
 function updateShopCart(e) {
-    console.log(e.target);
-    // Le bouton est pour le moment en dessous de la card body : soit créer un bouton / soit faire autrement avec boostrap
+    let id = this.dataset.id;
+    let option = this.dataset.option;
+    let cardContainer = e.target.closest('.card');
+    removeFromShopCart(id, option);
+    cardContainer.remove();
 }
+
+

@@ -30,9 +30,16 @@ fetch(URL)
 // Crée un objet "produit" 
 function createProduct(element) {
     let newProduct = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
-    productList[newProduct.id] = newProduct;
+    productList.push(newProduct);
     return newProduct;
 }
+
+// //FIRST Crée un objet "produit" 
+// function createProduct(element) {
+//     let newProduct = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
+//     productList[newProduct.id] = newProduct;
+//     return newProduct;
+// }
 
 // Affiche le produit sur la page HTML
 function displayProduct(product) {

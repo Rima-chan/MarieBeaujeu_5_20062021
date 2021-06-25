@@ -20,10 +20,18 @@ function getProductsInShop() {
     }
 }
 
+function removeFromShopCart(id, option) {
+    let productsInShop = getProductsInShop();
+    // console.log(productsInShop);
+    // Fontion fléchée callback de la méthode filter => en gros retourne les produits qui n'ont ni l'Id , ni la même option 
+    // Peut-être à faire dans l'autre sens ? Avec un OU mais je comprends mieux la logique du &&
+    productsInShop = productsInShop.filter(product => !(product.id === id && product.options === option));
+    // console.log(productsInShop); 
+    saveProductInShop(productsInShop);
+}
+
 // Prend en paramètre une liste de produit et la sauvegarde dans le panier (localStorage) au format JSON
 function saveProductInShop(productList) {
     localStorage.setItem("productsInShop", JSON.stringify(productList));
 }
-
-
 
