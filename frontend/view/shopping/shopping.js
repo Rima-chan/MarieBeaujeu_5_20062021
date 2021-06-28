@@ -1,33 +1,44 @@
 // SELECTEURS
 const CONTAINER = document.querySelector('#shopContainer');
+const TOTAL_PRODUCT = document.querySelector('#totalPrice');
+const TOTAL_ORDER = document.querySelector('#totalOrder');
+const FORM_ORDER = document.querySelector('#formOrder');
+
+let productsInShop =  getProductsInShop();
+let totalPrice = 0;
+
 
 // ECOUTEUR 
-// CONTAINER.addEventListener('click', updateShopCart);
+
+FORM_ORDER.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (productsInShop.length === 0) {
+        alert("Votre panier est vide");
+        
+    } else {
+        createOrder();
+    }
+});
 
 // FONCTIONS
-(async function(){
-    let productsInShop = await getProductsInShop();
-    for (product of productsInShop) {
-        // let productShop = new Product(product.id, product.name, product.price, product.description, product.image, product.options);
-        let productShop = createProduct(product);
+
+
+
+for (product of productsInShop) {
+        let productShop = new Product(product.id, product.name, product.price, product.description, product.image, product.options);
+        productShop.quantity = product.quantity;
+        let total = calculProductsPrice(product);
+        totalPrice += total/100;
+        console.log(total);
         // console.log(productShop);
         displayProduct(productShop);
-    }
-    document.querySelectorAll('.closeBtn').forEach(btn => {
-        btn.addEventListener('click', updateShopCart);
-    })
-    
-})()
-
-
-// Crée un objet "produit" // Ca marche aussi en le mettant directement dans la fonction asyn :
-// let pdt = New Product(product.name, etc....)
-function createProduct(element) {
-    let newProduct = new Product(element.id, element.name, element.price, element.description, element.image, element.options);
-    // product[newProduct.id] = newProduct;
-    return newProduct;
 }
+document.querySelectorAll('.closeBtn').forEach(btn => {
+    btn.addEventListener('click', updateShopCart);
+})
 
+TOTAL_PRODUCT.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalPrice)) + " €";
+calculAmountOrder();
 
 
 function displayProduct(product) {
@@ -38,7 +49,7 @@ function displayProduct(product) {
                                     <h3 class="modal-title h5">${product.name}</h3>
                                 </div>
                                 <div class="col-1 float-left p-0"> 
-                                    <button type="button" class="btn close closeBtn" aria-label="Close" data-id="${product.id}" data-option="${product.options}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer du panier">
+                                    <button type="button" class="btn close closeBtn" aria-label="Close" data-id="${product.id}" data-option="${product.options}" data-quantity="${product.quantity}" data-price="${product.price}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer du panier">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -51,7 +62,8 @@ function displayProduct(product) {
                             <div class="col-md-8"> 
                                 <div class="card-body">
                                     <p class="card-text">Option : ${product.options}</p>
-                                    <p class="card-text">${product.getFormatedPrice()} €</p>
+                                    <p class="card-text">Quantité : ${product.quantity}</p>
+                                    <p class="card-text price">${product.getFormatedPrice()} €</p>
                                 </div>
                             </div>
                         </div>
@@ -61,11 +73,51 @@ function displayProduct(product) {
 
 
 function updateShopCart(e) {
-    let id = this.dataset.id;
-    let option = this.dataset.option;
-    let cardContainer = e.target.closest('.card');
-    removeFromShopCart(id, option);
-    cardContainer.remove();
+    const ID = this.dataset.id;
+    const OPTION = this.dataset.option;
+    const QUANTITY = this.dataset.quantity;
+    const PRICE = this.dataset.price;
+    const CARD_CONTAINER = e.target.closest('.card');
+    updateProductPrice(parseInt(PRICE), parseInt(QUANTITY));
+    calculAmountOrder();
+    removeNbOfItems(QUANTITY);
+    removeFromShopCart(ID, OPTION);
+    CARD_CONTAINER.remove();
 }
 
+function calculProductsPrice(product) {
+    let total = product.price * product.quantity;
+    return total;
+}
 
+function updateProductPrice(price, quantity) {
+    totalPrice -= (price/100 * quantity);
+    TOTAL_PRODUCT.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalPrice)) + " €";
+}
+
+function calculAmountOrder() {
+    let totalProduct = totalPrice;
+    let totalShipping = 0;
+    let totalOrder = totalProduct + totalShipping;
+    TOTAL_ORDER.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalOrder)) + " €";
+}
+
+function createOrder() {
+    var valid = true;
+    for (let input of document.querySelectorAll('#formOrder input')) {
+        valid &= input.reportValidity();
+        if (!valid) {
+            break;
+        } 
+    }
+    if(valid) {
+        let firstName = document.querySelector('#inputFirstName').value;
+        let lastName = document.querySelector('#inputLastName').value;
+        let address = document.querySelector('#inputAddress').value;
+        let city = document.querySelector('#inputCity').value + " " + document.querySelector('#inputPostCode');
+        let email = document.querySelector('#inputEmail').value;
+        let order = new Order(firstName, lastName, address, city, email);
+        order.productsOrdered = productsInShop;
+        console.log(order);
+    }
+}

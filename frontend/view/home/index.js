@@ -1,4 +1,3 @@
-
 // SELECTEURS 
 const CONTAINER = document.querySelector('#productsContainer');
 const PRODUCT_BUTTONS = document.querySelectorAll('.productButton');
@@ -8,8 +7,6 @@ const URL = "http://localhost:3000/api/cameras";
 let productList = [];
 
 // ECOUTEURS
-
-
 
 
 // FONCTIONS
@@ -23,7 +20,7 @@ fetch(URL)
         displayProduct(newProduct);
         // console.log(newProduct);
     }
-    console.log(productList);
+    // console.log(productList);
 })
 .catch(error => console.log("Error : " + error))
 
@@ -33,14 +30,6 @@ function createProduct(element) {
     productList.push(newProduct);
     return newProduct;
 }
-
-// //FIRST Crée un objet "produit" 
-// function createProduct(element) {
-//     let newProduct = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
-//     productList[newProduct.id] = newProduct;
-//     return newProduct;
-// }
-
 // Affiche le produit sur la page HTML
 function displayProduct(product) {
     const TEMPLATE = `<div class="col-12 col-md-6">
@@ -55,3 +44,4 @@ function displayProduct(product) {
                         </div>`;
     CONTAINER.insertAdjacentHTML('afterbegin', TEMPLATE);
 }
+

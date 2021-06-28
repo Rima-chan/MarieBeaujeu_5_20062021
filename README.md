@@ -46,3 +46,12 @@ JAVASCRIPT
     - Méthode POST pour envoyer les données (objet contact)
     - Fonction qui génère un numéro de commande unique
     - Page confirmation commande
+
+
+    SESSION MENOTRAT
+    - Ajouter quantité pour éviter le soucis des 2 appareils phots
+    - Mettre P majuscule page produit car classe
+    - Flash JS
+    - POST 
+        - Body : sera le local storage
+    - Heruku pour l'hébergement

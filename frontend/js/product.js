@@ -7,11 +7,12 @@ class Product {
         this.price = price,
         this.description = description,
         this.image = image, 
-        this.options =  options
+        this.options =  options,
+        this.quantity = 1
     }
 
     getFormatedPrice() {
-        let price = new Intl.NumberFormat().format((this.price / 100));
+        let price = new Intl.NumberFormat('fr-FR', {maximumFractionDigits: 2}).format((this.price / 100 * this.quantity));
         return price;
     }
 }
