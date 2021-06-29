@@ -7,29 +7,18 @@ const FORM_ORDER = document.querySelector('#formOrder');
 let productsInShop =  getProductsInShop();
 let totalPrice = 0;
 
+let products = [];
+let contact = {};
 
-// ECOUTEUR 
+/****** PARTIE AFFICHAGE ET MISE A JOUR DU PANIER *****/
 
-FORM_ORDER.addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (productsInShop.length === 0) {
-        alert("Votre panier est vide");
-        
-    } else {
-        createOrder();
-    }
-});
-
-// FONCTIONS
-
-
-
+// Affiche chaque produit du panier
 for (product of productsInShop) {
         let productShop = new Product(product.id, product.name, product.price, product.description, product.image, product.options);
         productShop.quantity = product.quantity;
         let total = calculProductsPrice(product);
         totalPrice += total/100;
-        console.log(total);
+        // console.log(total);
         // console.log(productShop);
         displayProduct(productShop);
 }
@@ -37,7 +26,9 @@ document.querySelectorAll('.closeBtn').forEach(btn => {
     btn.addEventListener('click', updateShopCart);
 })
 
+// Affiche le nb de produits dans le panier
 TOTAL_PRODUCT.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalPrice)) + " €";
+
 calculAmountOrder();
 
 
@@ -71,7 +62,7 @@ function displayProduct(product) {
     CONTAINER.insertAdjacentHTML('beforeend', TEMPLATE);
 }
 
-
+// Met à jour le panier au clic sur le bouton supprimer
 function updateShopCart(e) {
     const ID = this.dataset.id;
     const OPTION = this.dataset.option;
@@ -85,6 +76,8 @@ function updateShopCart(e) {
     CARD_CONTAINER.remove();
 }
 
+
+/*** PARTIE CALCUL PRIX TOTAL PRODUIT ET PRIX TOTAL COMMANDE ****/
 function calculProductsPrice(product) {
     let total = product.price * product.quantity;
     return total;
@@ -97,11 +90,26 @@ function updateProductPrice(price, quantity) {
 
 function calculAmountOrder() {
     let totalProduct = totalPrice;
-    let totalShipping = 0;
+    let totalShipping = 0;  // Méthode de calcul à définir
     let totalOrder = totalProduct + totalShipping;
     TOTAL_ORDER.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalOrder)) + " €";
 }
 
+/******** PARTIE RECUPERATION ET ENVOI DES DONNEES AU SERVEUR *********/
+
+// A l'envoi du formaluraire, vérifie que le panier n'est pas vide et créer un objet commande
+FORM_ORDER.addEventListener('submit', function(e) {
+    e.preventDefault();
+    let productsOrdered = getProductsInShop();
+    if (productsOrdered.length === 0) {
+        alert("Votre panier est vide");
+        
+    } else {
+        createOrder();
+    }
+});
+
+// Vérifie que les données saisies par l'utilisateur sont correctes et crée un nouvel objet "order"
 function createOrder() {
     var valid = true;
     for (let input of document.querySelectorAll('#formOrder input')) {
@@ -110,14 +118,50 @@ function createOrder() {
             break;
         } 
     }
+    
     if(valid) {
-        let firstName = document.querySelector('#inputFirstName').value;
-        let lastName = document.querySelector('#inputLastName').value;
-        let address = document.querySelector('#inputAddress').value;
-        let city = document.querySelector('#inputCity').value + " " + document.querySelector('#inputPostCode');
-        let email = document.querySelector('#inputEmail').value;
-        let order = new Order(firstName, lastName, address, city, email);
-        order.productsOrdered = productsInShop;
-        console.log(order);
+        // contact = new Contact(document.querySelector('#inputFirstName').value, document.querySelector('#inputLastName').value, document.querySelector('#inputAddress').value, (document.querySelector('#inputCity').value + " " + document.querySelector('#inputPostCode').value), document.querySelector('#inputEmail').value);
+        let contact = new Object();
+        contact.firstName = document.querySelector('#inputFirstName').value;
+        contact.lastName = document.querySelector('#inputLastName').value;
+        contact.address = document.querySelector('#inputAddress').value
+        contact.city =  document.querySelector('#inputCity').value + " " + document.querySelector('#inputPostCode').value;
+        contact.email = document.querySelector('#inputEmail').value;
+        let productsOrdered = getProductsInShop();
+        productsOrdered.forEach(product => products.push(product.id));
+        
+        // document.querySelector('#inputFirstName').value = "";
+        // document.querySelector('#inputLastName').value = "";
+        // document.querySelector('#inputAddress').value = "";
+        // document.querySelector('#inputCity').value = "";
+        // document.querySelector('#inputPostCode').value = "";
+        // document.querySelector('#inputEmail').value = "";
+        // console.log(contact);
+        // console.log(products);
+        const sendTo = {
+            "contact" : contact,
+            "products" : products,
+        };
+        // console.log(sendTo);
+        const promise1 = fetch("http://localhost:3000/api/cameras/order", {
+            method: "POST",
+            body : JSON.stringify(sendTo),
+            headers : {
+                "Content-Type" : "application/json"
+            }
+        });
+        promise1.then(async(response) => {
+            try {
+                localStorage.clear();
+                const order = await response.json();
+                localStorage.setItem("contact", JSON.stringify(order));
+                console.log(totalPrice);
+                localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+                console.log(order.orderId);
+                window.location.href = "confirmation.html";
+            } catch(error) {
+                console.log("Error : " + error);
+            }
+        });
     }
 }

@@ -1,15 +1,8 @@
-// SELECTEURS 
 const CONTAINER = document.querySelector('#productsContainer');
 const PRODUCT_BUTTONS = document.querySelectorAll('.productButton');
-
-// VARIABLES & CONSTANTES
 const URL = "http://localhost:3000/api/cameras";
+
 let productList = [];
-
-// ECOUTEURS
-
-
-// FONCTIONS
 
 // Requete Fetch pour récupérer la liste de produits
 fetch(URL)
@@ -24,7 +17,7 @@ fetch(URL)
 })
 .catch(error => console.log("Error : " + error))
 
-// Crée un objet "produit" 
+// Crée un objet "produit" et l'ajoute dans une liste
 function createProduct(element) {
     let newProduct = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
     productList.push(newProduct);

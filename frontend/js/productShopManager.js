@@ -1,4 +1,4 @@
-// Gestion des produits aujoutés ou supprimés du panier avec localSorag
+// Gestion des produits aujoutés ou supprimés du panier avec localStorage
 
 // Ajoute le produit au panier
 function addProductInShop(product) {
@@ -63,21 +63,44 @@ function saveProductInShop(productList) {
     localStorage.setItem("productsInShop", JSON.stringify(productList));
 }
 
+function getOrderContact() {
+    let contact = localStorage.getItem("contact");
+    // console.log(contact);
+    if (contact != null) {
+        return JSON.parse(contact);
+    }
+}
 
+function getOrderPrice() {
+    let totalPrice = localStorage.getItem("totalPrice");
+    // console.log(totalPrice);
+    if (totalPrice != null) {
+        return JSON.parse(totalPrice);
+    }
+}
 
-/***** GERE AFFICHAGE NB DE PRODUITS ******/
+function getOrderProducts() {
+    let contact = localStorage.getItem("contact");
+    if (contact != null) {
+        return JSON.parse(contact);
+    }
+}
+
+/***** GERE AFFICHAGE NB DE PRODUITS DANS LE PANIER******/
+
 const SHOP_CONTAINER = document.querySelector('.itemsInShop');
 let nbItems = nbOfItems();
 
 displayNbOfItems(nbItems);
 
-
+// Ajoute la quantité au panier
 function addNbOfItems(quantity) {
     nbItems += quantity;
     SHOP_CONTAINER.textContent = nbItems;
     displayNbOfItems(nbItems)
 }
 
+// Supprime la quantité du panier
 function removeNbOfItems(quantity) {
     nbItems -= quantity;
     SHOP_CONTAINER.textContent = nbItems;
@@ -88,7 +111,7 @@ function removeNbOfItems(quantity) {
     }
 }
 
-
+// Vérifie que le panier n'est pas vide et récupère le nombre de produits dans le panier
 function nbOfItems() {
     let productList = getProductsInShop();
     if (productList) {
@@ -104,12 +127,12 @@ function nbOfItems() {
     }
 }
 
+// Affiche le nombre de produits dans le panier s'il est positif
 function displayNbOfItems(nb) {
     if (nb) {
         SHOP_CONTAINER.setAttribute("class", "itemsInShop");
         SHOP_CONTAINER.textContent = nb;
     }
-    
 }
 
 

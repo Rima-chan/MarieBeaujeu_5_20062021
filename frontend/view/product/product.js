@@ -1,32 +1,10 @@
-/*
-* Récupère l'id enregistré dans l'url
-* Faire une requête fetch de l'id
-* Afficher les infos produits sur la page
-* Fonction enregistrement de l'option
-* Fonction enregistrement panier 
-* Fonction affichage nb panier
-* Fonction si panier alors changer bouton en supprimer du panier ?
-*/
-
-
-// SELECTEURS 
 const CONTAINER = document.querySelector('#productContainer');
-
-
-
-// VARIABLES & CONSTANTES
 const URL_ID = window.location.search;
 const ID = URL_ID.slice(4,URL_ID.length);
 // console.log(ID);
 const URL = `http://localhost:3000/api/cameras/${ID}`;
 let product = {};
 
-
-// ECOUTEURS
-
-
-
-// FONCTIONS
 
 fetch(URL)
 .then(response => response.json())
@@ -85,7 +63,7 @@ function displaySingleProduct(product) {
     CONTAINER.insertAdjacentHTML('afterbegin', TEMPLATE);
 }
 
-
+// Affiche les options correspondantes au produit
 function displayOptions(product) {
     let optionsList = product.options;
     // console.log(optionsList);
@@ -96,6 +74,7 @@ function displayOptions(product) {
     }
 }
 
+// Ajoute le produit au panier au clic sur le bouton
 function addToShopCart() {
     const FORM = document.querySelector('form');
     FORM.addEventListener('submit', (e) => {
@@ -123,4 +102,3 @@ function confirmationMessage() {
     document.querySelector('#cardProduct').insertAdjacentHTML('beforeend', MESSAGE);
 }
 
-// displayNbOfItems();
