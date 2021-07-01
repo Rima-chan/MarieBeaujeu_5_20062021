@@ -36,10 +36,10 @@ function displayProduct(product) {
     const TEMPLATE = `<div class="card shadow-sm mb-3" data-id="${product.id}">
                         <div class="card-header container-fluid"> 
                             <div class="row">
-                                <div class="col"> 
+                                <div class="col-10"> 
                                     <h3 class="modal-title h5">${product.name}</h3>
                                 </div>
-                                <div class="col-1 float-left p-0"> 
+                                <div class="col-2 d-flex justify-content-end p-0"> 
                                     <button type="button" class="btn close closeBtn" aria-label="Close" data-id="${product.id}" data-option="${product.options}" data-quantity="${product.quantity}" data-price="${product.price}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer du panier">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -47,8 +47,8 @@ function displayProduct(product) {
                             </div>
                         </div> 
                         <div class="row g-0">
-                            <div class="col-md-4"> 
-                                <img src="${product.image}" class="card-img img-responsive" alt="photographie du produit ${product.name}">
+                            <div class="col-md-4 d-flex"> 
+                                <img src="${product.image}" class="card-img img-responsive flex-fill" alt="photographie du produit ${product.name}">
                             </div>
                             <div class="col-md-8"> 
                                 <div class="card-body">

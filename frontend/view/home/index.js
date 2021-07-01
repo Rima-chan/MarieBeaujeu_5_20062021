@@ -25,13 +25,13 @@ function createProduct(element) {
 }
 // Affiche le produit sur la page HTML
 function displayProduct(product) {
-    const TEMPLATE = `<div class="col-12 col-md-6">
+    const TEMPLATE = `<div class="col-12 col-md-6 d-flex">
                             <article class="card my-3 shadow-sm">
-                                <img src="${product.image}"class="card-img-top img-responsive" alt="photographie du modèle ${product.name}">
-                                <div class="card-body">
+                                <img src="${product.image}"class="card-img-top img-responsive flex-fill" alt="photographie du modèle ${product.name}">
+                                <div class="card-body d-flex flex-column">
                                     <h2 class="card-title">${product.name}</h2>
-                                    <p class="card-text">${product.description}</p>
-                                    <a href="../product/product.html?id=${product.id}" class="btn btn-dark stretched-link productButton">Voir ce produit</a>
+                                    <p class="card-text flex-fill">${product.description}</p>
+                                    <a href="../product/product.html?id=${product.id}" class="btn btn-dark stretched-link justify-content-center mx-auto px-3 py-2 productButton">Voir ce produit</a>
                                 </div>
                             </article>
                         </div>`;
