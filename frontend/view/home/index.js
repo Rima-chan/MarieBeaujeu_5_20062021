@@ -4,7 +4,7 @@ const PRODUCT_BUTTONS = document.querySelectorAll('.productButton');
 // Asynchrone function (awaits resolved promise) to recover API cameras data 
 (async () => {
     try {
-        const response = await fetch(host + apiCategories.cameras);
+        const response = await fetch(hostProd + apiCategories.cameras);
         const data = await response.json();
         // console.log(data);
         for (element of data) {
@@ -17,7 +17,7 @@ const PRODUCT_BUTTONS = document.querySelectorAll('.productButton');
     }
 })()
 
-// Create an HTML template for each product and displays it
+// Create an HTML template for each product and display it
 function displayProduct(product) {
     const TEMPLATE = `<div class="col-12 col-md-6 d-flex">
                             <article class="card my-3 shadow-sm">

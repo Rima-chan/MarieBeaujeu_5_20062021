@@ -6,7 +6,7 @@ let product = {};
 // Asynchrone function that recovers products infos by ID request 
 (async () => {
     try {
-        const response = await fetch(host + apiCategories.cameras + `/${ID}`);
+        const response = await fetch(hostProd + apiCategories.cameras + `/${ID}`);
         const data = await response.json();
         product = new Product(data._id, data.name, data.price, data.description, data.imageUrl, data.lenses);
         // console.log(newProduct);
@@ -22,7 +22,7 @@ let product = {};
     
 })()
 
-// Create an HTML template and displays it
+// Create an HTML template and display it
 function displaySingleProduct(product) {
     const TEMPLATE = `<div class="col-12 col-md-6">
                         <img src="${product.image}" class="img-fluid">
@@ -63,7 +63,7 @@ function displaySingleProduct(product) {
     CONTAINER.insertAdjacentHTML('afterbegin', TEMPLATE);
 }
 
-// Displays specific products' options 
+// Displays specific product's options 
 function displayOptions(product) {
     let optionsList = product.options;
     // console.log(optionsList);
@@ -74,8 +74,8 @@ function displayOptions(product) {
     }
 }
 
-// Listens clic on shop button
-// add the product in shop cart
+// Listen clic on shop button
+// Add the product in shop cart
 // Update nb of items in shop cart logo
 function addToShopCart() {
     const FORM = document.querySelector('form');
@@ -90,12 +90,11 @@ function addToShopCart() {
         product.quantity = parseInt(QUANTITY_INPUT, 10);
         console.log(product.quantity);
         addProductInShop(product);
-        // addNbOfItems(product.quantity);
         // alert("Votre produit a bien été ajouté au panier !");
     });
 }
 
-// Create a confirmation message after adding produtcs ih shop cart
+// Create a confirmation message after adding produtcs in shop cart
 function confirmationMessage() {
     const MESSAGE = '<p class="mt-3">Votre produit a bien été ajouté au panier !</p>';
     document.querySelector('#cardProduct').insertAdjacentHTML('beforeend', MESSAGE);

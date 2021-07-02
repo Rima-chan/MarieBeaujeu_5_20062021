@@ -9,18 +9,14 @@ function addProductInShop(product) {
     if (!check) {
         productsInShop.push(product);
         addNbOfItems(product.quantity);
+        
     } else {
-        productsInShop = productsInShop.filter( pdt => !(pdt.id === product.id && pdt.options === pdt.options));
-        console.log("produit quantité + quantité existante : " + product.quantity + "+" + check);
+        productsInShop = productsInShop.filter(pdt => !(pdt.id === product.id && pdt.options === pdt.options));
         addNbOfItems(product.quantity);
         product.quantity += check;
         // console.log(product.quantity);
         productsInShop.push(product);
-        // let productToUpdate = productsInShop.filter(pdt => (pdt.id === product.id && pdt.options === product.options));
-        // console.log(productToUpdate);
-        // console.log(check);
     }
-    // productsInShop.push(product);
     saveProductInShop(productsInShop);
 }
 

@@ -6,8 +6,6 @@ const FORM_ORDER = document.querySelector('#formOrder');
 let productsInShop =  getProductsInShop();
 let totalPrice = 0;
 
-
-
 let products = [];
 let contact = {};
 
@@ -82,7 +80,7 @@ function updateProductPrice(price, quantity) {
 
 // Calcul total amount order
 function calculAmountOrder() {
-    let totalShipping = 0;  // To defini later
+    let totalShipping = 0;  // To define later
     let totalOrder = totalPrice + totalShipping;
     TOTAL_ORDER.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalOrder)) + " €";
 }
