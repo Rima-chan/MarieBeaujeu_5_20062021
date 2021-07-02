@@ -1,34 +1,28 @@
 const CONTAINER = document.querySelector('#productContainer');
-const URL_ID = window.location.search;
-const ID = URL_ID.slice(4,URL_ID.length);
-// console.log(ID);
-const URL = `http://localhost:3000/api/cameras/${ID}`;
+const PARAMS = new URLSearchParams(window.location.search);
+const ID = PARAMS.get("id");
 let product = {};
 
+// Asynchrone function that recovers products infos by ID request 
+(async () => {
+    try {
+        const response = await fetch(host + apiCategories.cameras + `/${ID}`);
+        const data = await response.json();
+        product = new Product(data._id, data.name, data.price, data.description, data.imageUrl, data.lenses);
+        // console.log(newProduct);
+        console.log(product);
+        displaySingleProduct(product);
+        displayOptions(product);
+        addToShopCart();
+        updateProductPrice();
+        // console.log(data);
+    } catch(error) {
+        console.log("Error : " + error);
+    }
+    
+})()
 
-fetch(URL)
-.then(response => response.json())
-.then(data => {
-    let newProduct = createProduct(data);
-    // console.log(newProduct);
-    displaySingleProduct(newProduct);
-    displayOptions(newProduct);
-    addToShopCart();
-    updateProductPrice();
-    // console.log(data);
-    // console.log(product);
-
-})
-.catch(error => console.log("Error : " + error))
-
-// Crée un objet "produit" 
-function createProduct(element) {
-    product = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
-    return product;
-}
-
-
-// Affiche le produit sur la page HTML
+// Create an HTML template and displays it
 function displaySingleProduct(product) {
     const TEMPLATE = `<div class="col-12 col-md-6">
                         <img src="${product.image}" class="img-fluid">
@@ -38,16 +32,16 @@ function displaySingleProduct(product) {
                         <p>${product.description}</p>
                         <form>
                             <div class="form-group d-flex flex-column">
-                                <div class="form-row"> 
-                                    <div class="form-group col-md-6> 
-                                        <label for="optionSelect">Choissisez une taille de lentille : </label>
-                                        <select name="select" class="form-control form-select w-50 mb-2 mt-2" id="optionSelect" aria-label="Selection des options" required>
+                                <div class="row"> 
+                                    <div class="col-xl-12 col-md-6"> 
+                                        <label for="optionSelect">Lentilles : </label>
+                                        <select name="select" class="form-control form-select w-auto my-2 my-md-2 " id="optionSelect" aria-label="Selection des options de lentilles" required>
                                             <option value="">-- Options --</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-6> 
-                                        <label for="quantitySelect">Choissisez une quantité : </label>
-                                        <select name="select" class="form-control form-select w-25 mb-3 mt-2" id="quantitySelect" aria-label="Selection de la quantité" required>
+                                    <div class="col-xl-12 col-md-6"> 
+                                        <label for="quantitySelect">Quantité : </label>
+                                        <select name="select" class="form-control form-select w-auto mb-3 mt-2 my-md-2 " id="quantitySelect" aria-label="Selection de la quantité" required>
                                             <option value="1" selected>1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -61,16 +55,15 @@ function displaySingleProduct(product) {
                                         </select>
                                     </div>
                                 </div>
-                                <p class="mt-3">Prix : <span class="price">${product.getFormatedPrice()}</span> €</p>
-                                <button type="submit" class="btn btn-dark rounded-pill border-0 bg-color mx-auto mt-3 px-3 py-2" id="shopBtn" data-id="${product.id}">Ajouter au panier</button>
-                            
+                                <p class="mt-3 mt-lg-3 mt-md-2">Prix : <span class="price">${product.getFormatedPrice()}</span> €</p>
+                                <button type="submit" class="btn btn-dark rounded-pill border-0 bg-color mx-auto mt-3 mt-lg-3 mt-md-1 px-3 py-2" id="shopBtn" data-id="${product.id}">Ajouter au panier</button>
                             </div>
                         </form>
                     </div>`;
     CONTAINER.insertAdjacentHTML('afterbegin', TEMPLATE);
 }
 
-// Affiche les options correspondantes au produit
+// Displays specific products' options 
 function displayOptions(product) {
     let optionsList = product.options;
     // console.log(optionsList);
@@ -81,7 +74,9 @@ function displayOptions(product) {
     }
 }
 
-// Ajoute le produit au panier au clic sur le bouton
+// Listens clic on shop button
+// add the product in shop cart
+// Update nb of items in shop cart logo
 function addToShopCart() {
     const FORM = document.querySelector('form');
     FORM.addEventListener('submit', (e) => {
@@ -90,35 +85,29 @@ function addToShopCart() {
         const OPTION_INPUT = SELECT_OPTION.options[SELECT_OPTION.selectedIndex].value;
         const SELECT_QUANTITY = document.querySelector('#quantitySelect');
         const QUANTITY_INPUT = SELECT_QUANTITY.options[SELECT_QUANTITY.selectedIndex].value;
-        // console.log(ID);
-        // console.log(OPTION_INPUT);
-        //console.log(product.options);
+        
         product.options = OPTION_INPUT;
         product.quantity = parseInt(QUANTITY_INPUT, 10);
-        // console.log(product.options);
-        // console.log(product.quantity);
-        // console.log(product);
+        console.log(product.quantity);
         addProductInShop(product);
-        addNbOfItems(product.quantity);
+        // addNbOfItems(product.quantity);
         // alert("Votre produit a bien été ajouté au panier !");
     });
 }
 
+// Create a confirmation message after adding produtcs ih shop cart
 function confirmationMessage() {
     const MESSAGE = '<p class="mt-3">Votre produit a bien été ajouté au panier !</p>';
     document.querySelector('#cardProduct').insertAdjacentHTML('beforeend', MESSAGE);
 }
 
-
-
+// Update product's price according to selected quantity
 function updateProductPrice() {
     const selectQuantity = document.querySelector('#quantitySelect');
-selectQuantity.addEventListener('change', (e) => {
+    selectQuantity.addEventListener('change', () => {
     const quantity = selectQuantity.value;
     const priceContainer = document.querySelector('.price');
-    const price = priceContainer.textContent;
-    const total = rice * quantity;
-    console.log(total);
+    const total = product.price/100 * quantity;
     priceContainer.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((total));
 });
 }

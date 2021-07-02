@@ -1,29 +1,23 @@
 const CONTAINER = document.querySelector('#productsContainer');
 const PRODUCT_BUTTONS = document.querySelectorAll('.productButton');
-const URL = "http://localhost:3000/api/cameras";
 
-let productList = [];
-
-// Requete Fetch pour récupérer la liste de produits
-fetch(URL)
-.then(response => response.json())
-.then(data => {
-    for (element of data) {
-        let newProduct = createProduct(element);
-        displayProduct(newProduct);
-        // console.log(newProduct);
+// Asynchrone function (awaits resolved promise) to recover API cameras data 
+(async () => {
+    try {
+        const response = await fetch(host + apiCategories.cameras);
+        const data = await response.json();
+        // console.log(data);
+        for (element of data) {
+            // console.log(element);
+            let product = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
+            displayProduct(product);
+        }
+    } catch(error) {
+        console.log("Error : " + error);
     }
-    // console.log(productList);
-})
-.catch(error => console.log("Error : " + error))
+})()
 
-// Crée un objet "produit" et l'ajoute dans une liste
-function createProduct(element) {
-    let newProduct = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
-    productList.push(newProduct);
-    return newProduct;
-}
-// Affiche le produit sur la page HTML
+// Create an HTML template for each product and displays it
 function displayProduct(product) {
     const TEMPLATE = `<div class="col-12 col-md-6 d-flex">
                             <article class="card my-3 shadow-sm">

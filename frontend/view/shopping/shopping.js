@@ -1,4 +1,3 @@
-// SELECTEURS
 const CONTAINER = document.querySelector('#shopContainer');
 const TOTAL_PRODUCT = document.querySelector('#totalPrice');
 const TOTAL_ORDER = document.querySelector('#totalOrder');
@@ -7,31 +6,30 @@ const FORM_ORDER = document.querySelector('#formOrder');
 let productsInShop =  getProductsInShop();
 let totalPrice = 0;
 
+
+
 let products = [];
 let contact = {};
 
 /****** PARTIE AFFICHAGE ET MISE A JOUR DU PANIER *****/
 
-// Affiche chaque produit du panier
+// Displays each product in shop cart
+// Listens clic on products' close button
 for (product of productsInShop) {
         let productShop = new Product(product.id, product.name, product.price, product.description, product.image, product.options);
         productShop.quantity = product.quantity;
-        let total = calculProductsPrice(product);
-        totalPrice += total/100;
-        // console.log(total);
-        // console.log(productShop);
+        totalPrice += (productShop.quantity * productShop.price) / 100;
         displayProduct(productShop);
 }
 document.querySelectorAll('.closeBtn').forEach(btn => {
     btn.addEventListener('click', updateShopCart);
 })
 
-// Affiche le nb de produits dans le panier
+// Displays total price
 TOTAL_PRODUCT.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalPrice)) + " €";
-
 calculAmountOrder();
 
-
+// Creates an HTML template for each product and displays it
 function displayProduct(product) {
     const TEMPLATE = `<div class="card shadow-sm mb-3" data-id="${product.id}">
                         <div class="card-header container-fluid"> 
@@ -52,9 +50,9 @@ function displayProduct(product) {
                             </div>
                             <div class="col-md-8"> 
                                 <div class="card-body">
-                                    <p class="card-text">Option : ${product.options}</p>
-                                    <p class="card-text">Quantité : ${product.quantity}</p>
-                                    <p class="card-text price">${product.getFormatedPrice()} €</p>
+                                    <p class="card-text m-1">Option : ${product.options}</p>
+                                    <p class="card-text m-1">Quantité : ${product.quantity}</p>
+                                    <p class="card-text m-1 price">${product.getFormatedPrice()} €</p>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +60,7 @@ function displayProduct(product) {
     CONTAINER.insertAdjacentHTML('beforeend', TEMPLATE);
 }
 
-// Met à jour le panier au clic sur le bouton supprimer
+// Udpate shop cart when clicking on the close button
 function updateShopCart(e) {
     const ID = this.dataset.id;
     const OPTION = this.dataset.option;
@@ -76,40 +74,36 @@ function updateShopCart(e) {
     CARD_CONTAINER.remove();
 }
 
-
-/*** PARTIE CALCUL PRIX TOTAL PRODUIT ET PRIX TOTAL COMMANDE ****/
-function calculProductsPrice(product) {
-    let total = product.price * product.quantity;
-    return total;
-}
-
+// Update total price according to a price and a quantity
 function updateProductPrice(price, quantity) {
     totalPrice -= (price/100 * quantity);
     TOTAL_PRODUCT.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalPrice)) + " €";
 }
 
+// Calcul total amount order
 function calculAmountOrder() {
-    let totalProduct = totalPrice;
-    let totalShipping = 0;  // Méthode de calcul à définir
-    let totalOrder = totalProduct + totalShipping;
+    let totalShipping = 0;  // To defini later
+    let totalOrder = totalPrice + totalShipping;
     TOTAL_ORDER.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalOrder)) + " €";
 }
 
 /******** PARTIE RECUPERATION ET ENVOI DES DONNEES AU SERVEUR *********/
 
-// A l'envoi du formaluraire, vérifie que le panier n'est pas vide et créer un objet commande
+// Check if the submitted form is not empty and goes one
 FORM_ORDER.addEventListener('submit', function(e) {
     e.preventDefault();
     let productsOrdered = getProductsInShop();
     if (productsOrdered.length === 0) {
         alert("Votre panier est vide");
-        
     } else {
         createOrder();
     }
 });
 
-// Vérifie que les données saisies par l'utilisateur sont correctes et crée un nouvel objet "order"
+// Check if every inputs form are valid 
+// Creates an order object and sends it by POST method
+// Save order infos in localStorage
+// Redirects to confirmation page
 function createOrder() {
     var valid = true;
     for (let input of document.querySelectorAll('#formOrder input')) {
@@ -120,7 +114,6 @@ function createOrder() {
     }
     
     if(valid) {
-        // contact = new Contact(document.querySelector('#inputFirstName').value, document.querySelector('#inputLastName').value, document.querySelector('#inputAddress').value, (document.querySelector('#inputCity').value + " " + document.querySelector('#inputPostCode').value), document.querySelector('#inputEmail').value);
         let contact = new Object();
         contact.firstName = document.querySelector('#inputFirstName').value;
         contact.lastName = document.querySelector('#inputLastName').value;
@@ -130,19 +123,10 @@ function createOrder() {
         let productsOrdered = getProductsInShop();
         productsOrdered.forEach(product => products.push(product.id));
         
-        // document.querySelector('#inputFirstName').value = "";
-        // document.querySelector('#inputLastName').value = "";
-        // document.querySelector('#inputAddress').value = "";
-        // document.querySelector('#inputCity').value = "";
-        // document.querySelector('#inputPostCode').value = "";
-        // document.querySelector('#inputEmail').value = "";
-        // console.log(contact);
-        // console.log(products);
         const sendTo = {
             "contact" : contact,
             "products" : products,
         };
-        // console.log(sendTo);
         const promise1 = fetch("http://localhost:3000/api/cameras/order", {
             method: "POST",
             body : JSON.stringify(sendTo),
@@ -155,9 +139,7 @@ function createOrder() {
                 localStorage.clear();
                 const order = await response.json();
                 localStorage.setItem("contact", JSON.stringify(order));
-                console.log(totalPrice);
                 localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
-                console.log(order.orderId);
                 window.location.href = "confirmation.html";
             } catch(error) {
                 console.log("Error : " + error);

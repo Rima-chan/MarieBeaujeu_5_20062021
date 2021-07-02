@@ -1,42 +1,31 @@
-// Gestion des produits aujoutés ou supprimés du panier avec localStorage
+// Handle shop cart management
 
-// Ajoute le produit au panier
+// Add product in shop cart and save it in localStorage
 function addProductInShop(product) {
     let productsInShop = getProductsInShop();
-    console.log(productsInShop);
-    // if (productsInShop.length != 0) {
-    //     productsInShop.map(pdt => {
-
-    //     })        
-
-
-    //     // for (productInShop of productsInShop) {
-    //     //     if (productInShop.id === product.id && Object.is(productInShop.options,product.options)) {
-    //     //         // productInShop.options.localeCompare(product.option);
-    //     //         // console.log(productInShop.options.localeCompare(product.option));
-    //     //         productInShop.quantity += product.quantity;
-    //     //         // console.log(productInShop.options);
-    //     //         // console.log(product.options);
-    //     //         // console.log(productInShop.options === product.option);
-    //     //         console.log(Object.is(productInShop.options,product.options));
-    //     //     } else if (productInShop.id === product.id && !Object.is(productInShop.options,product.options)){
-    //     //         productInShop.quantity = product.quantity;
-    //     //         productsInShop.push(product);
-    //     //     } else {
-    //     //         productsInShop.push(product);
-
-    //     //     }
-    //     // }
-    // } else {
-    //     productsInShop.push(product);
-    // }
-    productsInShop.push(product);
+    let check = checkIfExistingProduct(product.id, product.options);
+    // console.log(check);
+    // console.log(productsInShop);
+    if (!check) {
+        productsInShop.push(product);
+        addNbOfItems(product.quantity);
+    } else {
+        productsInShop = productsInShop.filter( pdt => !(pdt.id === product.id && pdt.options === pdt.options));
+        console.log("produit quantité + quantité existante : " + product.quantity + "+" + check);
+        addNbOfItems(product.quantity);
+        product.quantity += check;
+        // console.log(product.quantity);
+        productsInShop.push(product);
+        // let productToUpdate = productsInShop.filter(pdt => (pdt.id === product.id && pdt.options === product.options));
+        // console.log(productToUpdate);
+        // console.log(check);
+    }
+    // productsInShop.push(product);
     saveProductInShop(productsInShop);
-    
 }
 
-// Si le panier est vide, retourne un tableau vide 
-// Sinon retourne la liste des produits au format JS (pour pouvoir y ajouter un nouveau produit)
+
+// Recover products in localStorage (return empty table if there are no data)
 function getProductsInShop() {
     let productsInShop = localStorage.getItem("productsInShop");
     // console.log(productsInShop);
@@ -47,22 +36,21 @@ function getProductsInShop() {
     }
 }
 
-// Permet de ne pas supprimer 2 produits en même temsp (même ref mais pas même option)
+// Remove product from shop cart and localStorage according to id and options
 function removeFromShopCart(id, option) {
     let productsInShop = getProductsInShop();
     // console.log(productsInShop);
-    // Fontion fléchée callback de la méthode filter => en gros retourne les produits qui n'ont ni l'Id , ni la même option 
-    // Peut-être à faire dans l'autre sens ? Avec un OU mais je comprends mieux la logique du &&
     productsInShop = productsInShop.filter(product => !(product.id === id && product.options === option));
     // console.log(productsInShop); 
     saveProductInShop(productsInShop);
 }
 
-// Prend en paramètre une liste de produit et la sauvegarde dans le panier (localStorage) au format JSON
+// Save a product list in localStorage
 function saveProductInShop(productList) {
     localStorage.setItem("productsInShop", JSON.stringify(productList));
 }
 
+// Recover order infos from localStorage
 function getOrderContact() {
     let contact = localStorage.getItem("contact");
     // console.log(contact);
@@ -71,6 +59,7 @@ function getOrderContact() {
     }
 }
 
+// Recover order amount from localStorage
 function getOrderPrice() {
     let totalPrice = localStorage.getItem("totalPrice");
     // console.log(totalPrice);
@@ -79,6 +68,7 @@ function getOrderPrice() {
     }
 }
 
+// Recover products' id order from localStorage
 function getOrderProducts() {
     let contact = localStorage.getItem("contact");
     if (contact != null) {
@@ -93,14 +83,18 @@ let nbItems = nbOfItems();
 
 displayNbOfItems(nbItems);
 
-// Ajoute la quantité au panier
+// Add quantity of added product
 function addNbOfItems(quantity) {
+    console.log(quantity);
+    console.log(nbItems);
+    console.log("quantity input : " + quantity);
+    console.log("nbItams + quantity input : " + nbItems + "+" + quantity);
     nbItems += quantity;
     SHOP_CONTAINER.textContent = nbItems;
-    displayNbOfItems(nbItems)
+    displayNbOfItems(nbItems);
 }
 
-// Supprime la quantité du panier
+// Remove quantity of deleted product 
 function removeNbOfItems(quantity) {
     nbItems -= quantity;
     SHOP_CONTAINER.textContent = nbItems;
@@ -111,7 +105,7 @@ function removeNbOfItems(quantity) {
     }
 }
 
-// Vérifie que le panier n'est pas vide et récupère le nombre de produits dans le panier
+// Calcul number of products in shop cart
 function nbOfItems() {
     let productList = getProductsInShop();
     if (productList) {
@@ -122,12 +116,13 @@ function nbOfItems() {
         });
         for (nb of nbOfItems) {
             sum += nb;
+            console.log(sum);
         }
         return sum;
     }
 }
 
-// Affiche le nombre de produits dans le panier s'il est positif
+// Check if there are items in shop cart and display them in shop cart logo
 function displayNbOfItems(nb) {
     if (nb) {
         SHOP_CONTAINER.setAttribute("class", "itemsInShop");
@@ -135,4 +130,16 @@ function displayNbOfItems(nb) {
     }
 }
 
+function checkIfExistingProduct(id, options) {
+    let productsInShop = getProductsInShop();
+    for (productInShop of productsInShop) {
+        if (productInShop.id != id) {
+            return false;
+        } else if (productInShop.id === id && productInShop.options.localeCompare(options) != 0) {
+            return false;
+        } else {
+            return productInShop.quantity;
+        }
+    }
+}
 
