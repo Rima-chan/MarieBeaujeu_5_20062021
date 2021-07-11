@@ -10,7 +10,7 @@ body {
 }
 
 .bg-color {
-    background: rgb(230,138,9);
+   
     background: linear-gradient(118deg, rgba(230,138,9,1) 0%, rgba(188,115,128,1) 28%, rgba(167,104,186,1) 53%, rgba(143,91,254,1) 80%);
 }
 
@@ -34,8 +34,8 @@ body {
 
 .itemsInShop {
     position: absolute;
-    top: -0.5rem;
-    right: -1rem;
+    top: -15.5%;
+    right: -19%;
     background: #000;
     color: #fff;
     font-size: 0.8rem;
@@ -51,7 +51,16 @@ body {
     display: none;
 }
 
+.btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(188,115,128,0.3);
+}
+
 /* FORMULAIRE COMMANDE */
+/* 
+.title-form {
+    font-size: 1.5rem;
+    font-weight: bold;
+} */
 
 input::placeholder,
 .obligation-field {
@@ -107,4 +116,20 @@ input:-webkit-autofill:active
 .spinner-container {
     width: 100vw;
     height: 100%;
+}
+
+/* FOOTER */
+
+.link-dark:focus, 
+.link-dark:hover {
+    text-decoration: underline !important;
+}
+
+.copyright {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.card-header {
+    background-color: rgba(167,104,186,0.1);
 }

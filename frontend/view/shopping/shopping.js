@@ -32,22 +32,24 @@ function displayProduct(product) {
     const TEMPLATE = `<div class="card shadow-sm mb-3" data-id="${product.id}">
                         <div class="card-header container-fluid"> 
                             <div class="row">
-                                <div class="col-10"> 
+                                <div class="col-10 my-auto"> 
                                     <h3 class="modal-title h5">${product.name}</h3>
                                 </div>
                                 <div class="col-2 d-flex justify-content-end p-0"> 
                                     <button type="button" class="btn close closeBtn" aria-label="Close" data-id="${product.id}" data-option="${product.options}" data-quantity="${product.quantity}" data-price="${product.price}" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer du panier">
-                                        <span aria-hidden="true">&times;</span>
+                                        <span aria-hidden="true" class="h4">&times;</span>
                                     </button>
                                 </div>
                             </div>
                         </div> 
                         <div class="row g-0">
-                            <div class="col-md-4 d-flex"> 
-                                <img src="${product.image}" class="card-img img-responsive flex-fill" alt="photographie du produit ${product.name}">
+                            <div class="col-md-4 d-flex">
+                                <a href="../product/product.html?id=${product.id}"> 
+                                    <img src="${product.image}" class="card-img img-responsive" alt="photographie du produit ${product.name}">
+                                </a>    
                             </div>
                             <div class="col-md-8"> 
-                                <div class="card-body">
+                                <div class="card-body py-2">
                                     <p class="card-text m-1">Option : ${product.options}</p>
                                     <p class="card-text m-1">Quantité : ${product.quantity}</p>
                                     <p class="card-text m-1 price">${product.getFormatedPrice()} €</p>
@@ -110,7 +112,6 @@ function createOrder() {
             break;
         } 
     }
-    
     if(valid) {
         let contact = new Object();
         contact.firstName = document.querySelector('#inputFirstName').value;

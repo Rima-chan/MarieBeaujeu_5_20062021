@@ -6,7 +6,8 @@ let product = {};
 // Asynchrone function that recovers products infos by ID request 
 (async () => {
     try {
-        const response = await fetch(hostProd + apiCategories.cameras + `/${ID}`);
+        const config = await loadConfig();
+        const response = await fetch(config.hostDev + config.apiCategories.cameras + `/${ID}`);
         const data = await response.json();
         product = new Product(data._id, data.name, data.price, data.description, data.imageUrl, data.lenses);
         // console.log(newProduct);
@@ -24,11 +25,11 @@ let product = {};
 
 // Create an HTML template and display it
 function displaySingleProduct(product) {
-    const TEMPLATE = `<div class="col-12 col-md-6">
-                        <img src="${product.image}" class="img-fluid">
+    const TEMPLATE = `<div class="col-12 col-md-6 bg-image hover-zoom">
+                        <img src="${product.image}" class="img-fluid w-100" alt="Photographie du produit ${product.name}">
                       </div>
                     <div class="col-12 col-md-6" id="cardProduct">
-                        <h2 class="mt-3 mt-md-0">${product.name}</h2>
+                        <h1 class="h2 mt-3 mt-md-0">Caméra vintage ${product.name}</h1>
                         <p>${product.description}</p>
                         <form>
                             <div class="form-group d-flex flex-column">
@@ -56,9 +57,12 @@ function displaySingleProduct(product) {
                                     </div>
                                 </div>
                                 <p class="mt-3 mt-lg-3 mt-md-2">Prix : <span class="price">${product.getFormatedPrice()}</span> €</p>
-                                <button type="submit" class="btn btn-dark rounded-pill border-0 bg-color mx-auto mt-3 mt-lg-3 mt-md-1 px-3 py-2" id="shopBtn" data-id="${product.id}">Ajouter au panier</button>
+                                <button type="submit" class="btn btn-dark rounded-pill border-0 bg-color mx-auto mt-3 mt-md-1 px-3 py-2" id="shopBtn" data-bs-toggle="modal" data-bs-target="#confirmationMessage" data-id="${product.id}" aria-label="ajouter au panier">Ajouter au panier</button>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             </div>
+                            
                         </form>
+                        
                     </div>`;
     CONTAINER.insertAdjacentHTML('afterbegin', TEMPLATE);
 }
@@ -90,7 +94,11 @@ function addToShopCart() {
         product.quantity = parseInt(QUANTITY_INPUT, 10);
         console.log(product.quantity);
         addProductInShop(product);
-        // alert("Votre produit a bien été ajouté au panier !");
+        if (product.quantity === 1) {
+            alert("Votre produit a bien été ajouté au panier !")
+        } else {
+            alert("Vos produits ont bien été ajoutés au panier !");
+        }
     });
 }
 
