@@ -5,13 +5,13 @@ const PRODUCT_BUTTONS = document.querySelectorAll('.productButton');
 (async () => {
     try {
         const config = await loadConfig();
-        const response = await fetch(config.hostDev + config.apiCategories.cameras);
+        const response = await fetch(`${apiUrl}` + config.apiCategories.cameras);
         const data = await response.json();
         // console.log(data);
         for (element of data) {
-            // console.log(element);
             let product = new Product(element._id, element.name, element.price, element.description, element.imageUrl, element.lenses);
             displayProduct(product);
+            // console.log(product);
         }
     } catch(error) {
         console.log("Error : " + error);

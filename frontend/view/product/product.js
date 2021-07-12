@@ -7,7 +7,7 @@ let product = {};
 (async () => {
     try {
         const config = await loadConfig();
-        const response = await fetch(config.hostDev + config.apiCategories.cameras + `/${ID}`);
+        const response = await fetch(`${apiUrl}` + config.apiCategories.cameras + `/${ID}`);
         const data = await response.json();
         product = new Product(data._id, data.name, data.price, data.description, data.imageUrl, data.lenses);
         // console.log(newProduct);
