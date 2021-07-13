@@ -10,13 +10,10 @@ let product = {};
         const response = await fetch(`${apiUrl}` + config.apiCategories.cameras + `/${ID}`);
         const data = await response.json();
         product = new Product(data._id, data.name, data.price, data.description, data.imageUrl, data.lenses);
-        // console.log(newProduct);
-        console.log(product);
         displaySingleProduct(product);
         displayOptions(product);
         addToShopCart();
         updateProductPrice();
-        // console.log(data);
     } catch(error) {
         console.log("Error : " + error);
     }
@@ -57,8 +54,7 @@ function displaySingleProduct(product) {
                                     </div>
                                 </div>
                                 <p class="mt-3 mt-lg-3 mt-md-2">Prix : <span class="price">${product.getFormatedPrice()}</span> €</p>
-                                <button type="submit" class="btn btn-dark rounded-pill border-0 bg-color mx-auto mt-3 mt-md-1 px-3 py-2" id="shopBtn" data-bs-toggle="modal" data-bs-target="#confirmationMessage" data-id="${product.id}" aria-label="ajouter au panier">Ajouter au panier</button>
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <button type="submit" class="btn btn-dark rounded-pill border-0 bg-color mx-auto mt-3 mt-md-1 px-3 py-2" id="shopBtn" data-id="${product.id}" aria-label="ajouter au panier">Ajouter au panier</button>
                             </div>
                             
                         </form>
@@ -70,11 +66,9 @@ function displaySingleProduct(product) {
 // Displays specific product's options 
 function displayOptions(product) {
     let optionsList = product.options;
-    // console.log(optionsList);
     for (option of optionsList) {
         let newOption = new Option(option, option);
         document.querySelector('#optionSelect').appendChild(newOption);
-        // console.log(newOption);
     }
 }
 
@@ -89,10 +83,8 @@ function addToShopCart() {
         const OPTION_INPUT = SELECT_OPTION.options[SELECT_OPTION.selectedIndex].value;
         const SELECT_QUANTITY = document.querySelector('#quantitySelect');
         const QUANTITY_INPUT = SELECT_QUANTITY.options[SELECT_QUANTITY.selectedIndex].value;
-        
         product.options = OPTION_INPUT;
         product.quantity = parseInt(QUANTITY_INPUT, 10);
-        console.log(product.quantity);
         addProductInShop(product);
         if (product.quantity === 1) {
             alert("Votre produit a bien été ajouté au panier !")

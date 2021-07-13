@@ -9,7 +9,7 @@ let totalPrice = 0;
 let products = [];
 let contact = {};
 
-/****** PARTIE AFFICHAGE ET MISE A JOUR DU PANIER *****/
+/****** DISPLAY AND UPDATE SHOP CART *****/
 
 // Displays each product in shop cart
 // Listens clic on products' close button
@@ -67,7 +67,7 @@ function updateShopCart(e) {
     const QUANTITY = this.dataset.quantity;
     const PRICE = this.dataset.price;
     const CARD_CONTAINER = e.target.closest('.card');
-    updateProductPrice(parseInt(PRICE), parseInt(QUANTITY));
+    updateProductsPrice(parseInt(PRICE), parseInt(QUANTITY));
     calculAmountOrder();
     removeNbOfItems(QUANTITY);
     removeFromShopCart(ID, OPTION);
@@ -75,7 +75,7 @@ function updateShopCart(e) {
 }
 
 // Update total price according to a price and a quantity
-function updateProductPrice(price, quantity) {
+function updateProductsPrice(price, quantity) {
     totalPrice -= (price/100 * quantity);
     TOTAL_PRODUCT.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalPrice)) + " €";
 }
@@ -87,7 +87,7 @@ function calculAmountOrder() {
     TOTAL_ORDER.textContent = new Intl.NumberFormat('fr-FR', {maximumFractionDigits : 2}).format((totalOrder)) + " €";
 }
 
-/******** PARTIE RECUPERATION ET ENVOI DES DONNEES AU SERVEUR *********/
+/******** GET BACK AND SENDING DATA ON SERVER *********/
 
 // Check if the submitted form is not empty and goes one
 FORM_ORDER.addEventListener('submit', function(e) {
@@ -122,24 +122,25 @@ function createOrder() {
         let productsOrdered = getProductsInShop();
         productsOrdered.forEach(product => products.push(product.id));
         
-        const sendTo = {
+        const orderToSend = {
             "contact" : contact,
             "products" : products,
         };
-        const promise1 = fetch("http://localhost:3000/api/cameras/order", {
+        const promiseOrder = fetch(`${apiUrl}` + `/api/cameras/order`, {
             method: "POST",
-            body : JSON.stringify(sendTo),
+            body : JSON.stringify(orderToSend),
             headers : {
                 "Content-Type" : "application/json"
             }
         });
-        promise1.then(async(response) => {
+        promiseOrder.then(async(response) => {
             try {
                 localStorage.clear();
                 const order = await response.json();
                 localStorage.setItem("contact", JSON.stringify(order));
                 localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
                 window.location.href = "confirmation.html";
+
             } catch(error) {
                 console.log("Error : " + error);
             }
