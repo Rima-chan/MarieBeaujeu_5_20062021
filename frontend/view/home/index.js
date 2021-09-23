@@ -14,7 +14,7 @@ const PRODUCT_BUTTONS = document.querySelectorAll('.productButton');
     } catch(error) {
         console.log("Error : " + error);
     }
-})()
+})();
 
 // Create an HTML template for each product and display it
 function displayProduct(product) {
