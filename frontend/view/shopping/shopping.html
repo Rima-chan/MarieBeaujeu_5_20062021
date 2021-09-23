@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Boostrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- Font awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Finger+Paint&family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet"> 
+
+
+    <link href="../../css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../../image/logo-Orinoco.png" type="image/png">
+    <title>Panier | Orinoco</title>
+    <meta name="description" content="Orinoco | Votre site e-commerce spécialisé : découvrez nos caméras vintage !"> 
+</head>
+<body>
+    <header style="background-color:#F3E9F1;">
+        <div class="container">
+            <div class="row">
+                <nav class="col navbar navbar-expand my-2">
+                    <div class="container-fluid ps-2">
+                        <a href="../home/index.html" class="navbar-brand text-dark logo-font d-inline-flex"><i class="fas fa-camera icon-style fa-2x align-self-center"></i> <span class="display-3 align-self-center ps-2 ps-md-3 m-0 logo-text">Orinoco</span></a>
+                         <ul class="navbar-nav">
+                             <li class="nav-item">
+                                 <a href="../shopping/shopping.html" class="nav-link text-dark shop-cart">
+                                    <i class="fas fa-shopping-cart icon-style fa-2x"></i>
+                                    <span class="itemsInShop visibility">0</span>
+                                </a>
+                             </li>
+                         </ul>
+                     </div>
+                 </nav>
+            </div>
+        </div>
+    </header>
+    <main class="container">
+        <div class="row my-3 my-md-5">
+            <section class="col-md-6 my-3" id="shopContainer">
+                <h2 class="m-0 pb-4">Votre Panier</h2>       
+            </section>
+
+            <section class="col-md-6 d-flex flex-column my-3">
+                <h2 class="border-bottom pb-4">Résumé de votre commande</h2>
+                <div class="mt-1 mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <p>Produits</p>
+                        <p id="totalPrice">0 €</p>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom pb-2">
+                        <p>Livraison</p>
+                        <p id="totalShipping">0 €</p>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                        <p>Total</p>
+                        <p id="totalOrder">€</p>
+                    </div>
+                </div>
+
+                <div class="accordion" id="accordionForm">
+                    <div class="accordion-item">
+                        <div class="accordion-header " id="titleForm">
+                            <h3 class="d-flex justify-content-between mb-0 p-0">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">
+                                    <span class="title-form h4">Passer commande</span>
+                                </button>
+                            </h3>
+                        </div>
+                    
+                        <div id="collapseForm" class="accordion-collapse collapse"  aria-labelledby="titleForm" data-parent="#accordionForm">
+                            <div class="accordion-body">
+                                <form id="formOrder" class=" d-flex flex-column mt-3">
+                                    <div class="form-row d-flex justify-content-between">
+                                        <div class="form-group col-5">
+                                            <label for="inputFirstName">Prénom* :</label>
+                                            <input type="text" class="form-control my-2" id="inputFirstName" placeholder="Exemple : Jean" required>
+                                        </div>
+                                        <div class="form-group col-5">
+                                            <label for="inputLastName">Nom* :</label>
+                                            <input type="text" class="form-control my-2" id="inputLastName" placeholder="Exemple : Dupont" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail">Email* :</label>
+                                        <input type="email" class="form-control my-2" id="inputEmail" placeholder="Exemple : prenom@email.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputAddress">Adresse* :</label>
+                                        <input type="text" class="form-control my-2" id="inputAddress" placeholder="Exemple : 123 rue Defrance" required>
+                                    </div>
+                                    <div class="form-row d-flex justify-content-between">
+                                        <div class="form-group col-6">
+                                            <label for="inputCity">Ville* :</label>
+                                            <input type="text" class="form-control my-2" placeholder="Exemple : Paris" id="inputCity" required>
+                                        </div>
+                                        <div class="form-group col-5">
+                                            <label for="inputPostCode">Code postal* :</label>
+                                            <input type="text" class="form-control my-2" id="inputPostCode" placeholder="Exemple : 75012" required minlength="5" maxlength="5" pattern="[0-9]+">
+                                        </div>
+                                    </div>
+                                    <div class="obligation-field font-italic">* : champs obligatoires</div>
+                                    <button class="btn bg-color align-self-center rounded-pill border-0 text-white mx-auto mt-4 mb-3 px-3 py-2" type="submit" >Commander</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                              
+                
+                
+            </section>
+        </div>
+    </main>
+    <footer style="background-color:#F3E9F1;" class="mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="text-center mt-5 mb-3">
+                    <a href="https://www.instagram.com" class="btn btn-outline-dark rounded-circle border-3 mx-2" role="button" target="_blank" rel="noopener" aria-label="lien instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.twitter.com" class="btn btn-outline-dark rounded-circle border-3 mx-2" role="button" target="_blank" rel="noopener" aria-label="lien twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.facebook.com" class="btn btn-outline-dark rounded-circle border-3 mx-2" role="button" target="_blank" rel="noopener" aria-label="lien facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+                <ul class="list-unstyled list-inline text-center mb-3 mt-3">
+                    <li class="list-inline-item text-dark">
+                        <a href="#!" class="text-decoration-none link-dark">A propos</a>
+                    </li>
+                    <li class="list-inline-item h2">.</li>
+                    <li class="list-inline-item text-dark">
+                        <a href="mailto:orinoco@orinoco.fr" class="text-decoration-none link-dark">Contact</a>
+                    </li>
+                    <li class="list-inline-item h2">.</li>
+                    <li class="list-inline-item text-dark">
+                        <a href="#!" class="text-decoration-none link-dark">Conditions Générales de ventes</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row mt-3 pb-3">
+                <p class="text-center font-weight-light copyright">2021 Copyright - Projet Orinoco Openclassroom par Marie Beaujeu </p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="../../js/config.js"></script>
+    <script src="../../js/Product.js"></script>
+    <script src="../../js/productShopManager.js"></script>
+    <script src="./shopping.js"></script>
+
+</body>
+</html>

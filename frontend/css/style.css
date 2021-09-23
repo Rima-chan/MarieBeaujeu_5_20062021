@@ -1,0 +1,135 @@
+@font-face {
+    font-family: "belligerent";
+    src: url('../font/belligerent.ttf');
+}
+
+body {
+    overflow-x: hidden;
+    box-sizing: border-box;
+    height: 100vh;
+}
+
+.bg-color {
+   
+    background: linear-gradient(118deg, rgba(230,138,9,1) 0%, rgba(188,115,128,1) 28%, rgba(167,104,186,1) 53%, rgba(143,91,254,1) 80%);
+}
+
+
+/* HEADER */
+.icon-style {
+    background: rgb(230,138,9);
+    background: linear-gradient(118deg, rgba(230,138,9,1) 0%, rgba(188,115,128,1) 28%, rgba(167,104,186,1) 53%, rgba(143,91,254,1) 80%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.logo-font {
+    font-family: 'belligerent', cursive;
+}
+
+.shop-cart {
+    position: relative;
+}
+
+.itemsInShop {
+    position: absolute;
+    top: -15.5%;
+    right: -19%;
+    background: #000;
+    color: #fff;
+    font-size: 0.8rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.visibility {
+    display: none;
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(188,115,128,0.3);
+}
+
+/* FORMULAIRE COMMANDE */
+/* 
+.title-form {
+    font-size: 1.5rem;
+    font-weight: bold;
+} */
+
+input::placeholder,
+.obligation-field {
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #000;
+    background-color: rgba(167,104,186,0.1);
+}
+
+.accordion-button::after {
+    background-image: none;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content:'\f078';
+    background: rgb(230,138,9);
+    background: linear-gradient(118deg, rgba(230,138,9,1) 0%, rgba(188,115,128,1) 28%, rgba(167,104,186,1) 53%, rgba(143,91,254,1) 80%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.accordion-button:focus, .form-control:focus {
+    border-color: rgba(167,104,186,1);
+    box-shadow: 0 0 0 0.25rem rgba(188,115,128,0.3);
+    
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: none;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content:'\f078';
+    background: rgb(230,138,9);
+    background: linear-gradient(118deg, rgba(230,138,9,1) 0%, rgba(188,115,128,1) 28%, rgba(167,104,186,1) 53%, rgba(143,91,254,1) 80%);
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active
+{
+    box-shadow: 0 0 0 30px rgba(158, 157, 158, 0.158)  inset !important;
+    -webkit-box-shadow: 0 0 0 30px rgba(158, 157, 158, 0.158)   inset !important;
+}
+
+
+/* PAGE CONFIRMATION */
+.spinner-container {
+    width: 100vw;
+    height: 100%;
+}
+
+/* FOOTER */
+
+.link-dark:focus, 
+.link-dark:hover {
+    text-decoration: underline !important;
+}
+
+.copyright {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.card-header {
+    background-color: rgba(167,104,186,0.1);
+}
